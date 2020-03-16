@@ -1,0 +1,11 @@
+version: 3
+
+# List below the optional stages you wish to include in your pipeline
+stages:
+  - alpha
+  - production
+
+# Define the notification recipients for messages sent by the pipeline.
+#notifications:
+#  slack:
+#    - "#some-channel"

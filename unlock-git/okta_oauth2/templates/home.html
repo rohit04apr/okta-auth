@@ -1,0 +1,56 @@
+{% extends 'index.html' %}
+{% block content %}
+
+<div class="alert alert-info alert-dismissable" role="alert">
+  {% if user_active %}
+    <p> {{ user_active }} </p>
+  {% elif tokens.claims.name %}
+   <p> Please click to unsuspend user : {{tokens.claims.name}} </p>
+  {% else %}
+   <p> Thankyou! Command ran successfully. Please check the output to verify </p>
+  {% endif %}
+
+</div>
+
+<form action="{% url 'unlock' %}" method="POST" onsubmit="return disableButton(this);">
+ {% csrf_token %}
+ <input type="hidden" id="email" name="email"  value="{{tokens.claims.preferred_username}}">
+ {% if not user_active %}
+	<button type="submit" class="btn btn-info" id="myButton">Unlock</button>
+ {% endif %}
+
+</form>
+
+{% if output %}
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h2 class="display-2"><u>Unsuspend Command Ran Sucessfully:</u></h2>
+    <p class="lead">{{ output }}</p>
+  </div>
+</div>
+
+{% endif %}
+
+{% if errors %}
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h2 class="display-2"><u>Failing With Output:</u></h2>
+    <p class="lead">{{ errors }}</p>
+  </div>
+</div>
+{% endif %}
+
+<script type="text/javascript">
+
+  function disableButton(form)
+  {
+    form.myButton.disabled = true;
+
+    var btn = document.getElementById("myButton");
+    btn.innerHTML = 'Please wait.....';
+    return true;
+  }
+
+</script>
+
+{% endblock %}

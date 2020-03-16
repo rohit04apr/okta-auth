@@ -1,0 +1,25 @@
+name: devops-github-unlock-user
+type: container
+image: {quay_url}/devops/github-unlock-user
+
+tags:
+  - public
+
+service:
+  container:
+    count: 1
+    port: 8888
+  checks:
+    - endpoint: /login
+
+env:
+  "vault/secret/service/${app}/config":
+    OKTA_ORG_URL : okta_org_url
+    OKTA_ISSUER  : okta_issuer
+    OKTA_APP_CLIENT_ID : okta_app_client_id
+    OKTA_APP_CLIENT_SECRET : okta_app_client_secret
+    OKTA_REDIRECT_URI : okta_redirect_uri
+    DJANGO_SECRET_KEY : django_secret_key
+    GITHUB_TOKEN : github_token
+    DEBUG : debug
+    OKTA_ADMIN_ENABLED : okta_admin_enabled
